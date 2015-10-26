@@ -6,17 +6,17 @@
  * For the full copyright and license information, please view the file license.md that was distributed with this source code.
  *}
 
-{define #form}
+{define form}
 {form $form}
-{block #errors}
+{block errors}
 
 <div n:foreach="$renderer->findErrors() as $error" class="alert alert-error">
-    <a class="close" data-dismiss="alert">×</a>{$error}
+    <a class="close" data-dismiss="alert">&times;</a>{$error}
 </div>
 {/block}
-{block #body}
+{block body}
 {* controls with group *}
-{foreach $renderer->findGroups() as $group}{block #group}
+{foreach $renderer->findGroups() as $group}{block group}
 
     <fieldset{$group->attrs->attributes()|noescape}>
         <legend n:if="$group->label">{$group->label}</legend>
@@ -27,7 +27,7 @@
             {include "$group->template", group => $group, controls => $controls, form => $form, _form => $form, __form => $form}
 
         {else}
-            {block #controls}
+            {block controls}
             {foreach $controls as $control}
             {if $renderer->isSubmitButton($control)}
                 {if $iterator->first}{='<div class="form-actions">'|noescape}{/if}
@@ -37,7 +37,7 @@
             {/if}
 			{var $attrs = ['input' => [], 'label' => []]}
 
-            {block #control}
+            {block control}
             <div{$control->getOption('pairContainer')->attributes()|noescape} n:tag-if="$control->getOption('pairContainer')">
                 {var
                     $name = $renderer->getControlName($control),
@@ -54,9 +54,7 @@
 
                 {elseif $renderer->isButton($control)}
 
-                    <div class="controls">
 						{$renderer::mergeAttrs($form[$name]->getControl(), $attrs['input'])}{$error}{$description}
-                    </div>
 
                 {elseif $renderer->isCheckbox($control)}
 
@@ -69,35 +67,31 @@
 
                     {$renderer::mergeAttrs($form[$name]->getLabel()->addClass("control-label"), $attrs['label'])}
 
-                    <div class="controls">
-                        {foreach $renderer->getRadioListItems($control) as $item}
+                    {foreach $renderer->getRadioListItems($control) as $item}
 
-                            {$renderer::mergeAttrs($item->html, $attrs['input'])}
-                        {/foreach}{$error}{$description}
-                    </div>
+                        {$renderer::mergeAttrs($item->html, $attrs['input'])}
+                    {/foreach}{$error}{$description}
 
                 {elseif $renderer->isCheckboxList($control)}
 
                     {$renderer::mergeAttrs($form[$name]->getLabel()->addClass("control-label"), $attrs['label'])}
 
-                    <div class="controls">
-                        {foreach $renderer->getCheckboxListItems($control) as $item}
+                    {foreach $renderer->getCheckboxListItems($control) as $item}
 
-                            {$renderer::mergeAttrs($item->html, $attrs['input'])}
-                        {/foreach}{$error}{$description}
-                    </div>
+                        {$renderer::mergeAttrs($item->html, $attrs['input'])}
+                    {/foreach}{$error}{$description}
 
                 {else}
 
+                    {if $form[$name]->getLabel()->getValue()}
                     {$renderer::mergeAttrs($form[$name]->getLabel(), $attrs['label'])}
+                    {/if}
 
-                    <div class="controls">
-                        {var $prepend = $control->getOption('input-prepend'), $append = $control->getOption('input-append')}
-                        <div n:class="$prepend? input-prepend, $append? input-append" n:tag-if="$prepend || $append">
-                            {$prepend}{$renderer::mergeAttrs($form[$name]->getControl(), $attrs['input'])}{$append}
-                        </div>
-                        {$error}{$description}
+                    {var $prepend = $control->getOption('input-prepend'), $append = $control->getOption('input-append')}
+                    <div class="input-group" n:tag-if="$prepend || $append">
+                        {$prepend}{$renderer::mergeAttrs($form[$name]->getControl(), $attrs['input'])}{$append}
                     </div>
+                    {$error}{$description}
 
                 {/if}
             </div>
@@ -112,11 +106,11 @@
 {/block}{/foreach}
 
 {* controls without group *}
-{include #controls, controls => $renderer->findControls()}
+{include controls, controls => $renderer->findControls()}
 {/block}
 {/form}
 {/define}
 
 {if !isset($mode)}
-    {include #form, form => $form, renderer => $renderer}
+    {include form, form => $form, renderer => $renderer}
 {/if}
