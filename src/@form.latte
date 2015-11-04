@@ -83,7 +83,7 @@
 
                 {else}
 
-                    {if $form[$name]->getLabel()->getValue()}
+                    {if $form[$name]->getLabel()->getText()}
                     {$renderer::mergeAttrs($form[$name]->getLabel(), $attrs['label'])}
                     {/if}
 
