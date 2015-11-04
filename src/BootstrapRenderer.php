@@ -504,6 +504,10 @@ class BootstrapRenderer extends \Nette\Object implements \Nette\Forms\IFormRende
 
 			$radio->label->addClass('radio');
 			$radio->html = clone $radio->label;
+			$display = $control->getOption('display', 'inline');
+			if ($display == 'inline') {
+				$radio->html->addClass($display);
+			}
 			$radio->html->insert(0, $radio->input);
 		}
 
