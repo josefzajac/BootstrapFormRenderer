@@ -191,8 +191,8 @@ class BootstrapRenderer extends \Nette\Object implements \Nette\Forms\IFormRende
 			$pair->addClass('form-group');
 
 			$label = $control->labelPrototype;
-			if ($control instanceof Controls\Checkbox) {
-				$pair->addClass('checkbox');
+			if (static::isCheckbox($control)) {
+				$label->addClass('checkbox');
 
 			} elseif (!$control instanceof Controls\RadioList && !self::isCheckboxList($control)) {
 				$label->addClass('control-label');
