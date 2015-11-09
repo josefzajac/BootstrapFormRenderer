@@ -196,7 +196,10 @@ class BootstrapRenderer extends \Nette\Object implements \Nette\Forms\IFormRende
 
 			} elseif (!$control instanceof Controls\RadioList && !self::isCheckboxList($control)) {
 				$label->addClass('control-label');
-                $el->addClass('form-control');
+
+                if (!$control instanceof \Minetro\Forms\reCAPTCHA\ReCaptchaField) {
+                    $el->addClass('form-control');
+                }
 			}
 
 			if ($control->getOption('required', FALSE)) {
